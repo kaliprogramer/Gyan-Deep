@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Moon, Search, Sun, X } from "lucide-react";
 import { useTheme } from "next-themes";
 import {logOut} from "@/hooks/lib/api/auth";
-const API_URL = "http://localhost:8000";
+const API_URL = process.env.NEXT_PUBLIC_BACKEND_API_URL;
 
 export default function Layout({ children }) {
   const router = useRouter();
