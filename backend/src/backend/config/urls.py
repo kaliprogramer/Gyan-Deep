@@ -38,6 +38,11 @@ urlpatterns = [
         include("notes.urls"),
         name="notes-api",
     ),
+    path(
+        "api/assignments/",
+        include("assignments.urls"),
+        name="assignments-api/",
+    ),
 ]
 
 if settings.DEBUG:

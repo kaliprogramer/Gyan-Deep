@@ -18,6 +18,12 @@ const nextConfig: NextConfig = {
       hostname: "gyandeep.pythonanywhere.com",
       pathname: "/media/**",
     },
+    {
+        protocol: backendUrl.protocol.replace(":", "") as "http" | "https",
+        hostname: backendUrl.hostname,
+        port: backendUrl.port,
+        pathname: "/media/**",
+      },
     ],
   },
 };

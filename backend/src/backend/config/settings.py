@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'authentication',
     "drf_spectacular",
     "notes",
+    "assignments",
 ]
 
 MIDDLEWARE = [

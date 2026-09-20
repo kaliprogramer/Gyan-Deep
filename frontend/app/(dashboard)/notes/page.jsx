@@ -43,7 +43,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-
+import {apiFetch} from "@/hooks/lib/api/apifetch";
 /* =========================================================
    CONFIG
 ========================================================= */
@@ -302,7 +302,7 @@ function UploadFileCard({ item, onRemove }) {
 ========================================================= */
 
 function CommentItem({ comment }) {
-  console.log("CommentItem comment:", comment);  
+  console.log("CommentItem comment:", comment);
   const avatar = comment?.user_profile_picture;
 
   return (
@@ -705,7 +705,7 @@ function NoteCard({ note, onLike, onComment }) {
           <div className="flex items-start justify-between gap-4">
             <div className="flex min-w-0 gap-3">
               <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full bg-muted">
-                {note.uploaded_by_profile_picture? (
+                {note.uploaded_by_profile_picture ? (
                   <img
                     src={note.uploaded_by_profile_picture}
                     alt={note.uploaded_by_name || "User"}
@@ -717,9 +717,7 @@ function NoteCard({ note, onLike, onComment }) {
               </div>
 
               <div className="min-w-0">
-                <CardTitle className="truncate text-lg">
-                  {note.title}
-                </CardTitle>
+                <CardTitle className="truncate text-lg">{note.title}</CardTitle>
                 <CardDescription className="mt-1">
                   {note.uploaded_by_name || "Unknown user"}
                   {note.created_at && (
@@ -809,9 +807,7 @@ function NoteCard({ note, onLike, onComment }) {
                         className="shrink-0"
                         onClick={() => handleDownload(file)}
                         disabled={isDownloading || downloadingId === "all"}
-                        aria-label={`Download ${
-                          file.original_name || "file"
-                        }`}
+                        aria-label={`Download ${file.original_name || "file"}`}
                       >
                         {isDownloading ? (
                           <Loader2 className="h-4 w-4 animate-spin" />
@@ -916,10 +912,7 @@ function NoteCard({ note, onLike, onComment }) {
                 </div>
               )}
 
-              <form
-                onSubmit={submitComment}
-                className="flex items-end gap-2"
-              >
+              <form onSubmit={submitComment} className="flex items-end gap-2">
                 <div className="min-w-0 flex-1">
                   <Input
                     value={comment}
@@ -1000,44 +993,40 @@ export default function NotesPage() {
      LOAD NOTES
   ========================================================= */
 
-  const loadNotes = useCallback(async () => {
-    try {
-      setLoadingNotes(true);
-      setNotesError("");
+const loadNotes = useCallback(async () => {
+  try {
+    setLoadingNotes(true);
+    setNotesError("");
 
-      const response = await fetch(`${API_URL}/api/notes/`, {
-        method: "GET",
-        credentials: "include",
-        cache: "no-store",
-      });
+    const data = await apiFetch("/api/notes/", {
+      method: "GET",
+    });
 
-      const data = await response.json().catch(() => ({}));
+    const noteList = Array.isArray(data)
+      ? data
+      : Array.isArray(data?.results)
+        ? data.results
+        : [];
 
-      if (!response.ok) {
-        throw new Error(
-          data?.detail || data?.message || "Unable to load notes.",
-        );
-      }
+    setNotes(noteList);
+  } catch (error) {
+    console.error("Load notes error:", error);
 
-      const noteList = Array.isArray(data)
-        ? data
-        : Array.isArray(data?.results)
-          ? data.results
-          : [];
+    setNotesError(
+      error instanceof Error
+        ? error.message
+        : "Unable to load notes."
+    );
+  } finally {
+    setLoadingNotes(false);
+  }
+}, []);
 
-      setNotes(noteList);
-    } catch (error) {
-      console.error("Load notes error:", error);
-      setNotesError(error?.message || "Unable to load notes.");
-    } finally {
-      setLoadingNotes(false);
-    }
-  }, []);
+useEffect(() => {
+  loadNotes();
+}, [loadNotes]);
 
-  useEffect(() => {
-    loadNotes();
-  }, [loadNotes]);
-  console.log("Notes loaded:", notes);
+console.log("Notes loaded:", notes);
 
   /* =========================================================
      CLEANUP PREVIEW URLS + XHR ON UNMOUNT
@@ -1351,10 +1340,7 @@ export default function NotesPage() {
     const data = await response.json().catch(() => ({}));
 
     if (!response.ok) {
-      let message =
-        data?.detail ||
-        data?.message ||
-        "Unable to add comment.";
+      let message = data?.detail || data?.message || "Unable to add comment.";
 
       if (Array.isArray(data?.text) && data.text.length) {
         message = data.text[0];

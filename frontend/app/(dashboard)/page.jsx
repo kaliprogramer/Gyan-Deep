@@ -10,6 +10,7 @@ export default function Home() {
       <div className="px-4 pb-2">
         <ChartAreaInteractive />
       </div>
+      <h1 className="text-3xl font-bold text-center mt-20">This page is under working</h1>
     </>
   );
 }
