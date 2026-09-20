@@ -33,6 +33,11 @@ urlpatterns = [
         SpectacularSwaggerView.as_view(url_name="schema"),
         name="swagger-ui",
     ),
+    path(
+        "api/notes/",
+        include("notes.urls"),
+        name="notes-api",
+    ),
 ]
 
 if settings.DEBUG:

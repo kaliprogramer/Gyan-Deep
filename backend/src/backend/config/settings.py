@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'authentication',
     "drf_spectacular",
+    "notes",
 ]
 
 MIDDLEWARE = [
