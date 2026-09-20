@@ -10,7 +10,6 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import {
   Field,
@@ -21,11 +20,10 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
-export function LoginForm({
-  className,
-  ...props
-}: React.ComponentProps<"div">) {
+
+export function LoginForm({ className, ...props }) {
   const router = useRouter();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -33,6 +31,12 @@ export function LoginForm({
 
     const email = formData.get("email");
     const password = formData.get("password");
+
+    // Password must be at least 8 characters
+    if (password.length < 8) {
+      alert("Password must be at least 8 characters long.");
+      return;
+    }
 
     try {
       await login(email, password);
@@ -52,7 +56,7 @@ export function LoginForm({
         <CardHeader className="space-y-3 px-6 pb-6 pt-8 text-center sm:px-10 sm:pt-10">
           <Link
             href="/"
-            className="group flex items-center justify-center  rounded-xl   transition-colors"
+            className="group flex items-center justify-center rounded-xl transition-colors"
           >
             <Image
               src="/gyandeeplogo.png"
@@ -63,6 +67,7 @@ export function LoginForm({
               className="object-contain"
             />
           </Link>
+
           <hr />
 
           <div>
@@ -85,7 +90,7 @@ export function LoginForm({
                 >
                   <Image
                     src="/google-logo.png"
-                    alt="Gyan Deep College logo"
+                    alt="Google logo"
                     width={30}
                     height={30}
                     priority
@@ -140,9 +145,15 @@ export function LoginForm({
                   name="password"
                   type="password"
                   autoComplete="current-password"
+                  minLength={8}
                   required
+                  placeholder="Enter your password"
                   className="h-12 rounded-xl px-4 text-base"
                 />
+
+                <FieldDescription className="text-xs">
+                  Password must be at least 8 characters.
+                </FieldDescription>
               </Field>
 
               {/* Login */}

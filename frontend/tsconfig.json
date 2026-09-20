@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-, "app/(dashboard)/page.jsx", "components/signup-form.jsx"  ],
+, "app/(dashboard)/page.jsx", "components/signup-form.jsx", "components/login-form.jsx"  ],
   "exclude": ["node_modules"]
 }
