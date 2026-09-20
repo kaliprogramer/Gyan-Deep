@@ -14,11 +14,10 @@ const nextConfig: NextConfig = {
         hostname: "images.unsplash.com",
       },
       {
-        protocol: backendUrl.protocol.replace(":", "") as "http" | "https",
-        hostname: backendUrl.hostname,
-        port: backendUrl.port,
-        pathname: "/media/**",
-      },
+      protocol: "https",
+      hostname: "gyandeep.pythonanywhere.com",
+      pathname: "/media/**",
+    },
     ],
   },
 };
