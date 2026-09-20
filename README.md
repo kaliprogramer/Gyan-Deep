@@ -1,2 +1,4 @@
 # Gyan-Deep
-https://gyandeep-7myp0m17e-kaliprogrammer.vercel.app/
+https://gyandeep-6oqp5q0b8-kaliprogrammer.vercel.app/notes
+
+https://gyandeep.pythonanywhere.com/
